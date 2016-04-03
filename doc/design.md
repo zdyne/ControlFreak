@@ -14,6 +14,10 @@ A blower attached to one of the smoker input vents controls the pit temperature.
 
 A microcontroller reads the temperature sensors and controls a PWM output to the blower. To
 avoid an additional driver circuit, a blower with RPM output and PWM input control was
-selected.
+selected. The microcontroller provides a serial API to read/configure/control the system. A
+connected computer (e.g. Raspberry Pi) can run the associated web app to
+visualize/configure/control the system.
+
+System can be run off a single 12V DC supply.
 
 
