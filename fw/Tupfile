@@ -1,0 +1,12 @@
+# Arduino Uno R3
+CC = avr-gcc
+OBJ_COPY = avr-objcopy
+CFLAGS += -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -I.
+LFLAGS += -mmcu=atmega328p
+OBJFLAGS += -O ihex -R .eeprom
+
+SRC += arduino/*.c
+
+: foreach $(SRC) |> $(CC) $(CFLAGS) -o %o %f |> build/arduino/%B.o
+: build/arduino/*.o |> $(CC) $(LFLAGS) %f -o %o |> build/arduino/control_freak
+: build/arduino/control_freak |> $(OBJ_COPY) $(OBJFLAGS) %f %o |> build/arduino/control_freak.hex

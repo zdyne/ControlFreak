@@ -25,10 +25,9 @@ void cb_put(struct cb_circular_buffer *cb, uint8_t b)
 enum cb_status cb_get(struct cb_circular_buffer *cb, uint8_t *b)
 {
 	if (cb->head == cb->tail) {
-		retun CB_STATUS_EMPTY;
+		return CB_STATUS_EMPTY;
 	}
 
 	*b = cb->buffer[cb->tail];
-	cb->tail = (cb->tail + 1) % 
-
+	cb->tail = (cb->tail + 1) % CB_MAX_LEN;
 }

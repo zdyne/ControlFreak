@@ -5,11 +5,16 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include <avr/interrupt.h>
+
+#include "circular_buffer.h"
+#include "comm.h"
 
 
 ISR(USART_RX_vect)
 {
-	
+	cb_put(&rx_buffer, UDR0);
 }
 

@@ -12,9 +12,9 @@
 
 struct cb_circular_buffer
 {
-	uint8_t buffer[CB_MAX_LEN];
-	uint8_t head;
-	uint8_t tail;
+	volatile uint8_t buffer[CB_MAX_LEN];
+	volatile uint8_t head;
+	volatile uint8_t tail;
 };
 
 

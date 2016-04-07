@@ -8,8 +8,8 @@
 #include "circular_buffer.h"
 
 
-volatile struct circular_buffer rx_buffer;
-volatile struct circular_buffer tx_buffer;
+struct cb_circular_buffer rx_buffer;
+struct cb_circular_buffer tx_buffer;
 
 
 void comm_init(void);
