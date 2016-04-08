@@ -29,3 +29,7 @@ void cb_init(struct cb_circular_buffer *cb);
 void cb_put(struct cb_circular_buffer *cb, uint8_t b);
 
 enum cb_status cb_get(struct cb_circular_buffer *cb, uint8_t *b);
+
+uint8_t cb_count(struct cb_circular_buffer *cb);
+
+uint8_t cb_peek_at(struct cb_circular_buffer *cb, uint8_t idx);

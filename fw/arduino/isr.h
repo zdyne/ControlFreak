@@ -17,9 +17,5 @@
 ISR(USART_RX_vect)
 {
 	cb_put(&rx_buffer, UDR0);
-	
-	PORTB |= _BV(PB0);
-	_delay_ms(1000.0);
-	PORTB &= ~(_BV(PB0));
 }
 

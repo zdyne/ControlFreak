@@ -5,6 +5,7 @@
 
 
 #include "comm.h"
+#include "command.h"
 #include "isr.h"
 
 
@@ -27,6 +28,9 @@ int main(int argc, char *argv[])
 
 	while (1)
 		{
+			if (command_ready(&rx_buffer))
+				{
 
+				}
 		}
 }
