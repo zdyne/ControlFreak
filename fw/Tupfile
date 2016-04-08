@@ -1,6 +1,7 @@
 # Arduino Uno R3
 CC = avr-gcc
 OBJ_COPY = avr-objcopy
+PROGRAMMER = avrdude
 CFLAGS += -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -I.
 LFLAGS += -mmcu=atmega328p
 OBJFLAGS += -O ihex -R .eeprom
