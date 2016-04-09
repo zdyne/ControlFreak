@@ -4,8 +4,9 @@
  */
 
 #include <avr/io.h>
+#include <avr/sfr_defs.h>
 
-#define BAUD 9600
+#define BAUD 115200
 #include <util/setbaud.h>
 
 #include "circular_buffer.h"
@@ -14,6 +15,8 @@
 
 void comm_init(void)
 {
+	CB_INIT(RX_BUFFER);
+
 	/* Baud rate */
 	UBRR0H = UBRRH_VALUE;
 	UBRR0L = UBRRL_VALUE;
@@ -25,9 +28,17 @@ void comm_init(void)
 	UCSR0A &= ~(_BV(U2X0));
 #endif /* USE_2X */
 
-	UCSR0B |= (_BV(RXCIE0) | _BV(RXEN0));
 	UCSR0C |= (_BV(UCSZ01) | _BV(UCSZ00));
 
-	cb_init(&rx_buffer);
-	cb_init(&tx_buffer);
+	/* Enable RX */
+	UCSR0B |= _BV(RXEN0);
+
+	/* Flush RX */
+	while (bit_is_set(UCSR0A, RXC0))
+		{
+			uint8_t c = UDR0;
+		}
+
+	/* Enable RX interrupt */
+	UCSR0B |= _BV(RXCIE0);
 }

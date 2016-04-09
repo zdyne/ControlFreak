@@ -3,18 +3,18 @@
  *
  */
 
+#include <util/delay.h>
 
 #include "comm.h"
 #include "command.h"
 #include "isr.h"
+#include "led.h"
 
 
 int main(int argc, char *argv[])
 {
 	/* Configure I/O */
-	/* PB0 -> Arduino Pin 8 */
-	DDRB |= _BV(PB0);
-	PORTB &= ~(_BV(PB0));
+	led_error_init();
 
 	/* Configure timers */
 
@@ -28,9 +28,11 @@ int main(int argc, char *argv[])
 
 	while (1)
 		{
-			if (command_ready(&rx_buffer))
+			if (command_ready())
 				{
-
+					command_process();
 				}
+
+			_delay_ms(2000.0);
 		}
 }

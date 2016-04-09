@@ -11,11 +11,11 @@
 
 enum command_id
 	{
-		COMMAND_ID_DBG_SET_FAN
+		COMMAND_ID_DBG_SET_BLOWER_POWER
 	};
 
 
-uint8_t command_ready(struct cb_circular_buffer *buf);
+uint8_t command_ready(void);
 
-void command_process(struct cb_circular_buffer *buf);
+void command_process(void);
 

@@ -12,10 +12,21 @@
 
 struct cb_circular_buffer
 {
-	volatile uint8_t buffer[CB_MAX_LEN];
-	volatile uint8_t head;
-	volatile uint8_t tail;
+	uint8_t buffer[CB_MAX_LEN];
+	uint8_t head;
+	uint8_t tail;
 };
+
+
+#define CB_INIT(b) b.head = b.tail = 0
+
+#define CB_LEN(b) ((typeof(b.head))((b.head) - (b.tail)))
+
+#define CB_PUSH(b, c) (b.buffer)[b.head++ & (CB_MAX_LEN - 1)] = (c)
+
+#define CB_POP(b) (b.buffer)[b.tail++ & (CB_MAX_LEN - 1)]
+
+#define CB_PEEK_AT(b, idx) (b.buffer)[(b.tail + idx) & (CB_MAX_LEN - 1)]
 
 
 enum cb_status

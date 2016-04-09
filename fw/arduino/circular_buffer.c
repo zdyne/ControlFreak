@@ -15,7 +15,7 @@ void cb_init(struct cb_circular_buffer *cb)
 
 void cb_put(struct cb_circular_buffer *cb, uint8_t b)
 {
-	uint8_t next = (cb->head + 1)  % CB_MAX_LEN;
+	uint8_t next = (cb->head + 1) & (CB_MAX_LEN - 1);
 	
 	cb->buffer[cb->head] = b;
 	cb->head = next;
@@ -41,6 +41,6 @@ uint8_t cb_count(struct cb_circular_buffer *cb)
 
 uint8_t cb_peek_at(struct cb_circular_buffer *cb, uint8_t idx)
 {
-	uint8_t offset = (cb->head + idx) % CB_MAX_LEN;
+	uint8_t offset = (cb->tail + idx) & (CB_MAX_LEN - 1);
 	return cb->buffer[offset];
 }
