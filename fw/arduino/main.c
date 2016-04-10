@@ -15,8 +15,7 @@ int main(int argc, char *argv[])
 {
 	/* Configure I/O */
 	led_error_init();
-
-	/* Configure timers */
+	blower_init();
 
 	/* Configure serial port */
 	comm_init();

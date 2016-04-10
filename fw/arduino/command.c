@@ -11,6 +11,18 @@
 #include "command.h"
 #include "led.h"
 #include "comm.h"
+#include "blower.h"
+
+
+static void cmd_set_blower_power(void);
+
+
+typedef void (*cmd_fp_t)(void);
+
+static cmd_fp_t CMDS[] =
+	{
+		cmd_set_blower_power
+	};
 
 
 /**
@@ -48,7 +60,14 @@ void command_process(void)
 			led_error_on();
 		}
 
-	esc = CB_POP(RX_BUFFER);
-	esc = CB_POP(RX_BUFFER);
-	esc = CB_POP(RX_BUFFER);
+	CMDS[CB_POP(RX_BUFFER)]();
+}
+
+
+static void cmd_set_blower_power(void)
+{
+	uint8_t b = CB_POP(RX_BUFFER);
+	b = CB_POP(RX_BUFFER);
+
+	blower_set_power(0);
 }
