@@ -66,8 +66,16 @@ void command_process(void)
 
 static void cmd_set_blower_power(void)
 {
-	uint8_t b = CB_POP(RX_BUFFER);
-	b = CB_POP(RX_BUFFER);
+	uint8_t n = CB_POP(RX_BUFFER);
 
-	blower_set_power(0);
+	if (n != 1)
+		{
+			led_error_on();
+		}
+
+	n = CB_POP(RX_BUFFER);
+
+	blower_set_power(n);
+
+	n = CB_POP(RX_BUFFER);
 }

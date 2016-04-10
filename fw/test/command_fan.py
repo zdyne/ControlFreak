@@ -11,8 +11,10 @@ def main():
         time.sleep(4)
 
         s.write(struct.pack("!B", 0x55))
-        s.write(struct.pack("!B", 0x02))
         s.write(struct.pack("!B", 0x00))
+        s.write(struct.pack("!B", 0x01))
+        # 50% duty cycle
+        s.write(struct.pack("!B", 0x32))
         s.write(struct.pack("!B", 0x03))
         time.sleep(1)
 
