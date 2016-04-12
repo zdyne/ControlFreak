@@ -12,6 +12,12 @@
 
 #include "circular_buffer.h"
 #include "comm.h"
+#include "blower.h"
+#include "timer.h"
+#include "led.h"
+
+
+volatile uint8_t blower_update_tach = 0;
 
 
 ISR(USART_RX_vect)
@@ -28,3 +34,27 @@ ISR(USART_RX_vect)
 		}
 }
 
+
+ISR(USART_TX_vect)
+{
+	if (CB_LEN(TX_BUFFER) > 0)
+		{
+			UDR0 = CB_POP(TX_BUFFER);
+		}
+}
+
+
+ISR(PCINT2_vect)
+{
+	if (BLOWER_TACH_PIN > 0)
+		{
+			blower_tach_pulses++;
+		}
+}
+
+
+ISR(TIMER1_OVF_vect)
+{
+	timer_load_tcnt();
+	blower_update_tach = 1;
+}

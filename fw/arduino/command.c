@@ -14,14 +14,18 @@
 #include "blower.h"
 
 
+static void cmd_send_response(void);
+
 static void cmd_set_blower_power(void);
+static void cmd_get_blower_rpm(void);
 
 
 typedef void (*cmd_fp_t)(void);
 
 static cmd_fp_t CMDS[] =
 	{
-		cmd_set_blower_power
+		cmd_set_blower_power,
+		cmd_get_blower_rpm
 	};
 
 
@@ -78,4 +82,43 @@ static void cmd_set_blower_power(void)
 	blower_set_power(n);
 
 	n = CB_POP(RX_BUFFER);
+
+	/* Create response */
+	CB_PUSH(TX_BUFFER, COMMAND_ID_DBG_SET_BLOWER_POWER);
+	CB_PUSH(TX_BUFFER, 0x01);
+	CB_PUSH(TX_BUFFER, 0x00);
+	CB_PUSH(TX_BUFFER, 0xFE);
+
+	cmd_send_response();
+}
+
+
+static void cmd_get_blower_rpm(void)
+{
+	uint16_t rpm = 0;
+
+	uint8_t n = CB_POP(RX_BUFFER);
+
+
+	if (n != 0)
+		{
+			led_error_on();
+		}
+
+	n = CB_POP(RX_BUFFER);
+
+	CB_PUSH(TX_BUFFER, COMMAND_ID_DBG_GET_BLOWER_RPM);
+	CB_PUSH(TX_BUFFER, 0x02);
+	rpm = blower_get_tach();
+	CB_PUSH(TX_BUFFER, (uint8_t)(rpm & 0xFF));
+	CB_PUSH(TX_BUFFER, (uint8_t)((rpm >> 8) & 0xFF));
+	CB_PUSH(TX_BUFFER, 0xFD);
+
+	cmd_send_response();
+}
+
+
+static void cmd_send_response(void)
+{
+	UDR0 = 0x55;
 }

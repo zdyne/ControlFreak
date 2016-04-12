@@ -15,8 +15,6 @@
 void led_error_init(void)
 {
 	LED_ERROR_DDR |= _BV(LED_ERROR_PIN);
-
-	/*led_error_blink(4);*/
 }
 
 

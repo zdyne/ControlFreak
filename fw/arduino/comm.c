@@ -16,6 +16,7 @@
 void comm_init(void)
 {
 	CB_INIT(RX_BUFFER);
+	CB_INIT(TX_BUFFER);
 
 	/* Baud rate */
 	UBRR0H = UBRRH_VALUE;
@@ -30,8 +31,8 @@ void comm_init(void)
 
 	UCSR0C |= (_BV(UCSZ01) | _BV(UCSZ00));
 
-	/* Enable RX */
-	UCSR0B |= _BV(RXEN0);
+	/* Enable RX & TX */
+	UCSR0B |= (_BV(RXEN0) | _BV(TXEN0));
 
 	/* Flush RX */
 	while (bit_is_set(UCSR0A, RXC0))
@@ -39,6 +40,6 @@ void comm_init(void)
 			uint8_t c = UDR0;
 		}
 
-	/* Enable RX interrupt */
-	UCSR0B |= _BV(RXCIE0);
+	/* Enable RX & TX interrupt */
+	UCSR0B |= (_BV(RXCIE0) | _BV(TXCIE0));
 }

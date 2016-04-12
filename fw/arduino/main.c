@@ -9,10 +9,14 @@
 #include "command.h"
 #include "isr.h"
 #include "led.h"
+#include "timer.h"
 
 
 int main(int argc, char *argv[])
 {
+	/* Configure time */
+	timer_init();
+
 	/* Configure I/O */
 	led_error_init();
 	blower_init();
@@ -27,11 +31,15 @@ int main(int argc, char *argv[])
 
 	while (1)
 		{
+			if (blower_update_tach)
+				{
+					blower_update_tach = 0;
+					blower_compute_tach();
+				}
+
 			if (command_ready())
 				{
 					command_process();
 				}
-
-			_delay_ms(2000.0);
 		}
 }
