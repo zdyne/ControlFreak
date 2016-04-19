@@ -26,7 +26,7 @@ void blower_init(void)
 	PORTD |= _BV(PD4);
 
 	/* For Fast PWM, allows us to set the duty cycle via OCR2B and freq w/ OCR2A */
-	TCCR2A |= _BV(COM2B1);
+	TCCR2A |= (_BV(COM2B1) | _BV(COM2A1));
 
 	/* Fast PWM */
 	TCCR2A |= (_BV(WGM21) | _BV(WGM20));

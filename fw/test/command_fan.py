@@ -13,8 +13,7 @@ def main():
         s.write(struct.pack("!B", 0x55))
         s.write(struct.pack("!B", 0x00))
         s.write(struct.pack("!B", 0x01))
-        # 50% duty cycle
-        s.write(struct.pack("!B", 0x80))
+        s.write(struct.pack("!B", 0x63))
         s.write(struct.pack("!B", 0x03))
 
         bytes = []
