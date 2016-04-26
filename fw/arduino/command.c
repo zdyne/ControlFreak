@@ -12,12 +12,14 @@
 #include "led.h"
 #include "comm.h"
 #include "blower.h"
+#include "temperature.h"
 
 
 static void cmd_send_response(void);
 
 static void cmd_set_blower_power(void);
 static void cmd_get_blower_rpm(void);
+static void cmd_get_temperature_raw_adc(void);
 
 
 typedef void (*cmd_fp_t)(void);
@@ -25,7 +27,8 @@ typedef void (*cmd_fp_t)(void);
 static cmd_fp_t CMDS[] =
 	{
 		cmd_set_blower_power,
-		cmd_get_blower_rpm
+		cmd_get_blower_rpm,
+		cmd_get_temperature_raw_adc
 	};
 
 
@@ -113,6 +116,30 @@ static void cmd_get_blower_rpm(void)
 	CB_PUSH(TX_BUFFER, (uint8_t)(rpm & 0xFF));
 	CB_PUSH(TX_BUFFER, (uint8_t)((rpm >> 8) & 0xFF));
 	CB_PUSH(TX_BUFFER, 0xFD);
+
+	cmd_send_response();
+}
+
+
+static void cmd_get_temperature_raw_adc(void)
+{
+	uint16_t raw = 0;
+
+	uint8_t n = CB_POP(RX_BUFFER);
+
+	if (n != 0)
+		{
+			led_error_on();
+		}
+
+	n = CB_POP(RX_BUFFER);
+
+	CB_PUSH(TX_BUFFER, COMMAND_ID_DBG_GET_TEMPERATURE_RAW_ADC);
+	CB_PUSH(TX_BUFFER, 0x02);
+	raw = temperature_dbg_raw_adc();
+	CB_PUSH(TX_BUFFER, (uint8_t)(raw & 0xFF));
+	CB_PUSH(TX_BUFFER, (uint8_t)((raw >> 8) & 0xFF));
+	CB_PUSH(TX_BUFFER, 0xDE);
 
 	cmd_send_response();
 }

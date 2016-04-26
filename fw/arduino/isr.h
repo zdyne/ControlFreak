@@ -18,6 +18,8 @@
 
 
 volatile uint8_t blower_update_tach = 0;
+volatile uint8_t temperature_read_start = 0;
+volatile uint8_t temperature_read_ready = 0;
 
 
 ISR(USART_RX_vect)
@@ -56,5 +58,13 @@ ISR(PCINT2_vect)
 ISR(TIMER1_OVF_vect)
 {
 	timer_load_tcnt();
+
 	blower_update_tach = 1;
+	temperature_read_start = 1;
+}
+
+
+ISR(ADC_vect)
+{
+	temperature_read_ready = 1;
 }
