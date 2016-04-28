@@ -19,6 +19,14 @@ void temperature_init(void)
 
 	/* Disable digital input */
 	DIDR0 |= _BV(ADC0D);
+	DDRC &= ~(_BV(PC0));
+	PORTC &= ~(_BV(PC0));
+	
+	/* Set reference voltage */
+	ADMUX |= _BV(REFS0);
+
+	/* Set prescalar to 128: sampling freq -> 125 kHz */
+	ADCSRA |= (_BV(ADPS0) | _BV(ADPS1) | _BV(ADPS2));
 	
 	/* Enable ADC */
 	ADCSRA |= _BV(ADEN);
