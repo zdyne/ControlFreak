@@ -16,3 +16,5 @@ void temperature_start(void);
 void temperature_read(void);
 
 uint16_t temperature_dbg_raw_adc(void);
+
+void temperature_set_params(uint8_t n_samples_avg);

@@ -11,6 +11,7 @@
 #include "led.h"
 #include "timer.h"
 #include "temperature.h"
+#include "parameters.h"
 
 
 static void process_temperatures(void);
@@ -18,6 +19,8 @@ static void process_temperatures(void);
 
 int main(int argc, char *argv[])
 {
+	parameters_load();
+
 	/* Configure time */
 	timer_init();
 

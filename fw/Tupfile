@@ -4,10 +4,12 @@ OBJ_COPY = avr-objcopy
 PROGRAMMER = avrdude
 CFLAGS += -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -I.
 LFLAGS += -mmcu=atmega328p
-OBJFLAGS += -O ihex -R .eeprom
+FLASH_OBJFLAGS += -O ihex -R .eeprom
+EEPROM_OBJFLAGS += -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 --no-change-warnings -O ihex
 
 SRC += arduino/*.c
 
 : foreach $(SRC) |> $(CC) $(CFLAGS) -o %o %f |> build/arduino/%B.o
 : build/arduino/*.o |> $(CC) $(LFLAGS) %f -o %o |> build/arduino/control_freak
-: build/arduino/control_freak |> $(OBJ_COPY) $(OBJFLAGS) %f %o |> build/arduino/control_freak.hex
+: build/arduino/control_freak |> $(OBJ_COPY) $(FLASH_OBJFLAGS) %f %o |> build/arduino/control_freak.hex
+: build/arduino/control_freak |> $(OBJ_COPY) $(EEPROM_OBJFLAGS) %f %o |> build/arduino/control_freak.eep

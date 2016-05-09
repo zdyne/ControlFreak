@@ -10,6 +10,7 @@
 
 
 static uint16_t temperature_raw_adc = 0;
+static uint8_t temperature_n_samples_avg;
 
 
 void temperature_init(void)
@@ -50,4 +51,10 @@ void temperature_read(void)
 uint16_t temperature_dbg_raw_adc(void)
 {
 	return temperature_raw_adc;
+}
+
+
+void temperature_set_params(uint8_t n_samples_avg)
+{
+	temperature_n_samples_avg = n_samples_avg;
 }
